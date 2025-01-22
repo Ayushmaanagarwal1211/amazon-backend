@@ -16,7 +16,6 @@ const Products = require('./models/Product.js')
 
 app.get('/products',async (req,res)=>{
     const products = await Products.find()
-    console.log(products)
     return res.status(200).json(products)
 })
 

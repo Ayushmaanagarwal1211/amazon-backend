@@ -31,7 +31,6 @@ router.post('/login',async (req,res)=>{
     const isCorrect = await bcrypt.compare(password , user.password)
     if(isCorrect){
         const user_to_encrypt = {email,name:user.name,_id:user._id}
-        console.log(user_to_encrypt)
         const refresh_token = jwt.sign(user_to_encrypt,REFRESH_TOKEN)
         const token = generateToken(user_to_encrypt)
         refreshTokensSet.add(refresh_token)
@@ -55,7 +54,6 @@ function checkUser(req,res,next){
         token = token.split(" ")[1]
     }
     if(!token){
-        console.log(token)
         return  res.status(401).json({message : "unauthorized"})
     }
     try{
@@ -64,10 +62,8 @@ function checkUser(req,res,next){
             return res.json("Not Valid")
         }
         req.user = user
-        // console.log(req.user,user)
         next()
     }catch(err){
-        console.log(token,'sddddddddddd')
         return res.status(403).json({message : "jwt expired"})
     }
 }
