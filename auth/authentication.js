@@ -32,7 +32,7 @@ router.post('/login',async (req,res)=>{
     if(isCorrect){
         const user_to_encrypt = {email,name:user.name,_id:user._id}
         const refresh_token = jwt.sign(user_to_encrypt,REFRESH_TOKEN)
-        const token = generateToken(user_to_encrypt)
+        const token = generateToken({...user_to_encrypt})
         refreshTokensSet.add(refresh_token)
         return  res.status(200).json({user:user_to_encrypt,token,refresh_token})
     }
@@ -56,6 +56,7 @@ function checkUser(req,res,next){
     if(!token){
         return  res.status(401).json({message : "unauthorized"})
     }
+    console.log(token)
     try{
         const user  = jwt.verify(token, JWT_SECRET)
         if(!user){
@@ -68,7 +69,7 @@ function checkUser(req,res,next){
     }
 }
 function generateToken(data){
-    const token = jwt.sign(data,JWT_SECRET,{expiresIn:"20s"})
+    const token = jwt.sign(data,JWT_SECRET,{expiresIn:"5s"})
     return token
 }
 

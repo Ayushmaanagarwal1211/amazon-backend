@@ -19,5 +19,12 @@ app.get('/products',async (req,res)=>{
     return res.status(200).json(products)
 })
 
+app.get('/get-user',checkUser,(req,res)=>{
+    console.log(req.user)
+    if(!req.user){
+        return res.status(400).send("Not Valid User")
+    }
 
+    return res.status(200).json(req.user)
+})
 app.listen(PORT);
